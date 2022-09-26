@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">StatusCovid_Carsales</string>
+    <string name="selected_date">Seleccione una fecha</string>
+    <string name="confirmed_cases">Casos confirmados:</string>
+    <string name="number_of_deceased_people">Cantidad de personas fallecidas:</string>
+</resources>
