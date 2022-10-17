@@ -8,16 +8,19 @@ import com.david.statuscovid_carsales.data.api.CovidService
 import com.david.statuscovid_carsales.data.model.StatusCovid
 import com.david.statuscovid_carsales.data.util.Resource
 import com.david.statuscovid_carsales.domain.usecase.GetStatusCovid
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class CovidViewModel(
+@HiltViewModel
+class CovidViewModel @Inject constructor(
     private val getStatusCovid: GetStatusCovid
 ): ViewModel() {
 
-    val statusCovid: MutableLiveData<Resource<StatusCovid>> = MutableLiveData()
+    val statusCovid: MutableLiveData<Resource<StatusCovid>?> = MutableLiveData()
 
     fun getStatusCovid(date: String) = viewModelScope.launch(Dispatchers.IO) {
         statusCovid.postValue(Resource.Loading())

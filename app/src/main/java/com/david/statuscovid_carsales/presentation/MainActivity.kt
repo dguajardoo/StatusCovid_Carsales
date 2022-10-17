@@ -4,23 +4,19 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.david.statuscovid_carsales.R
 import com.david.statuscovid_carsales.data.util.Resource
 import com.david.statuscovid_carsales.databinding.ActivityMainBinding
 import com.david.statuscovid_carsales.presentation.viewmodel.CovidViewModel
-import com.david.statuscovid_carsales.presentation.viewmodel.CovidViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    @Inject
-    lateinit var factory: CovidViewModelFactory
-    lateinit var viewModel: CovidViewModel
+    private val viewModel: CovidViewModel by viewModels()
     private lateinit var mBinding: ActivityMainBinding
 
     private lateinit var mDate: String
@@ -28,9 +24,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
-
-        viewModel = ViewModelProvider(this, factory).get(CovidViewModel::class.java)
-
         showDate()
         showCalendar()
     }
@@ -77,6 +70,9 @@ class MainActivity : AppCompatActivity() {
                     response.message?.let {
                         Toast.makeText(this, "An error ocurred : $it", Toast.LENGTH_LONG).show()
                     }
+                }
+                else -> {
+
                 }
             }
         }
