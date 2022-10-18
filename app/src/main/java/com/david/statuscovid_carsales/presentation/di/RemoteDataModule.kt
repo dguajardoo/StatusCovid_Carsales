@@ -1,6 +1,6 @@
 package com.david.statuscovid_carsales.presentation.di
 
-import com.david.statuscovid_carsales.data.api.CovidService
+import com.david.statuscovid_carsales.data.api.ICovidService
 import com.david.statuscovid_carsales.data.repository.DataRemoteDataSource
 import com.david.statuscovid_carsales.data.repository.DataRemoteDataSourceImpl
 import dagger.Module
@@ -14,7 +14,7 @@ import javax.inject.Singleton
 class RemoteDataModule {
     @Singleton
     @Provides
-    fun providesDataRemoteDataSource(covidService: CovidService): DataRemoteDataSource {
-        return DataRemoteDataSourceImpl(covidService)
+    fun providesDataRemoteDataSource(ICovidService: ICovidService): DataRemoteDataSource {
+        return DataRemoteDataSourceImpl(ICovidService)
     }
 }

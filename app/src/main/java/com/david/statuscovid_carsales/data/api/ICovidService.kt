@@ -5,8 +5,8 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface CovidService {
-    @GET("reports/total") // cambiar por constantes
+interface ICovidService {
+    @GET(TOTAL_REPORTS)
     suspend fun getCovidStatistics(
         @Query("date") date: String
     ): Response<StatusCovidData>

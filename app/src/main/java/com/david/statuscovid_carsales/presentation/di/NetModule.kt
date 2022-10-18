@@ -1,7 +1,7 @@
 package com.david.statuscovid_carsales.presentation.di
 
 import com.david.statuscovid_carsales.BuildConfig
-import com.david.statuscovid_carsales.data.api.CovidService
+import com.david.statuscovid_carsales.data.api.ICovidService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,7 +46,7 @@ class NetModule {
 
     @Singleton
     @Provides
-    fun provideNewsAPIService(retrofit: Retrofit): CovidService {
-        return retrofit.create(CovidService::class.java)
+    fun provideNewsAPIService(retrofit: Retrofit): ICovidService {
+        return retrofit.create(ICovidService::class.java)
     }
 }
