@@ -1,7 +1,7 @@
 package com.david.statuscovid_carsales.presentation.di
 
 import com.david.statuscovid_carsales.domain.repository.CovidRepository
-import com.david.statuscovid_carsales.domain.usecase.GetStatusCovid
+import com.david.statuscovid_carsales.domain.usecase.GetStatusCovidUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,9 +11,5 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class UseCaseModule {
-    @Singleton
-    @Provides
-    fun provideGetStatusCovid(covidRepository: CovidRepository): GetStatusCovid {
-        return GetStatusCovid(covidRepository)
-    }
+
 }

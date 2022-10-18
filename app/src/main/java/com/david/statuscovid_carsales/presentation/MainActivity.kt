@@ -55,19 +55,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadData() {
         viewModel.getStatusCovid(mDate)
-        viewModel.statusCovid.observe(this) {response ->
-            when (response) {
+        viewModel.statusCovidLivedata.observe(this) {
+            when (it) {
                 is Resource.Success -> {
                     hideLoading()
-                    mBinding.tvConfirmed.text =  "${getString(R.string.confirmed_cases)} ${response?.data?.data?.confirmed.toString()}"
-                    mBinding.tvDeaths.text = "${getString(R.string.number_of_deceased_people)} ${response?.data?.data?.deaths.toString()}"
+                    mBinding.tvConfirmed.text =  "${getString(R.string.confirmed_cases)} ${it.data.confirmed}"
+                    mBinding.tvDeaths.text = "${getString(R.string.number_of_deceased_people)} ${it.data.deaths}"
                 }
                 is Resource.Loading -> {
                     showLoading()
                 }
                 is Resource.Error -> {
                     hideLoading()
-                    response.message?.let {
+                    it.message?.let {
                         Toast.makeText(this, "An error ocurred : $it", Toast.LENGTH_LONG).show()
                     }
                 }
