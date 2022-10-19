@@ -8,6 +8,6 @@ import javax.inject.Inject
 
 class StatusCovidMapper @Inject constructor() : IMapper<StatusCovidData, StatusCovidViewData> {
     override fun execute(statusCovidData: StatusCovidData?) = statusCovidData?.dataCovid?.let {
-        StatusCovidViewData(it.confirmed.orZero(), it.deaths.orZero())
-    } ?: StatusCovidViewData(0, 0)
+        StatusCovidViewData(it.confirmed.orZero().toString(), it.deaths.orZero().toString())
+    } ?: StatusCovidViewData()
 }

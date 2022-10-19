@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.david.statuscovid_carsales.R
 import com.david.statuscovid_carsales.data.util.State
 import com.david.statuscovid_carsales.databinding.ActivityMainBinding
 import com.david.statuscovid_carsales.presentation.viewmodel.CovidViewModel
@@ -28,25 +27,34 @@ class MainActivity : AppCompatActivity() {
         showCalendar()
     }
 
+    override fun onStart() {
+        super.onStart()
+        mBinding.viewModel = viewModel
+        mBinding.lifecycleOwner = this
+    }
+
     private fun initCalendar() {
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
+        val dpd = DatePickerDialog(
+            this,
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
+                var monthString = (monthOfYear + 1).toString();
+                if (monthString.length == 1) {
+                    monthString = "0$monthString"
+                }
+                mDate = "$year-$monthString-${dayOfMonth - 1}"
+                loadData()
 
-
-        val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-
-            var monthString = (monthOfYear+1).toString();
-            if (monthString.length == 1) {
-                monthString = "0$monthString"
-            }
-            mDate = "$year-$monthString-${dayOfMonth-1}"
-            loadData()
-
-        }, year, month, day)
+            },
+            year,
+            month,
+            day
+        )
         var dt = Date()
         dt = c.time
         dpd.datePicker.maxDate = dt.time
@@ -55,24 +63,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadData() {
         viewModel.getStatusCovid(mDate)
-        viewModel.statusCovidLivedata.observe(this) {
-            when (it) {
-                is State.Success -> {
-                    hideLoading()
-                    mBinding.tvConfirmed.text =  "${getString(R.string.confirmed_cases)} ${it.data.confirmed}"
-                    mBinding.tvDeaths.text = "${getString(R.string.number_of_deceased_people)} ${it.data.deaths}"
-                }
-                is State.Loading -> {
-                    showLoading()
-                }
-                is State.Error -> {
-                    hideLoading()
-                    it.message?.let {
-                        Toast.makeText(this, "An error ocurred : $it", Toast.LENGTH_LONG).show()
-                    }
-                }
-                else -> {
-
+        viewModel.statusCovidStateLiveData.observe(this) {
+            if (it is State.Error) {
+                mBinding.errorView.show("An error ocurred : ${it.message}") {
+                    loadData()
                 }
             }
         }
@@ -97,15 +91,5 @@ class MainActivity : AppCompatActivity() {
 
             loadData()
         }
-    }
-
-    private fun showLoading() {
-        mBinding.linearLayout.visibility = View.VISIBLE
-        mBinding.btnDate.visibility = View.GONE
-    }
-
-    private fun hideLoading() {
-        mBinding.linearLayout.visibility = View.GONE
-        mBinding.btnDate.visibility = View.VISIBLE
     }
 }
