@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.david.statuscovid_carsales.R
-import com.david.statuscovid_carsales.data.util.Resource
+import com.david.statuscovid_carsales.data.util.State
 import com.david.statuscovid_carsales.databinding.ActivityMainBinding
 import com.david.statuscovid_carsales.presentation.viewmodel.CovidViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,15 +57,15 @@ class MainActivity : AppCompatActivity() {
         viewModel.getStatusCovid(mDate)
         viewModel.statusCovidLivedata.observe(this) {
             when (it) {
-                is Resource.Success -> {
+                is State.Success -> {
                     hideLoading()
                     mBinding.tvConfirmed.text =  "${getString(R.string.confirmed_cases)} ${it.data.confirmed}"
                     mBinding.tvDeaths.text = "${getString(R.string.number_of_deceased_people)} ${it.data.deaths}"
                 }
-                is Resource.Loading -> {
+                is State.Loading -> {
                     showLoading()
                 }
-                is Resource.Error -> {
+                is State.Error -> {
                     hideLoading()
                     it.message?.let {
                         Toast.makeText(this, "An error ocurred : $it", Toast.LENGTH_LONG).show()
