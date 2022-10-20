@@ -1,41 +1,37 @@
 package com.david.statuscovid_carsales.presentation.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
-import com.david.statuscovid_carsales.data.util.Resource
+import com.david.statuscovid_carsales.data.util.State
 import com.david.statuscovid_carsales.domain.usecase.GetStatusCovidUseCase
 import com.david.statuscovid_carsales.presentation.viewdata.StatusCovidViewData
+import com.david.statuscovid_carsales.utils.BaseViewModel
+import com.david.statuscovid_carsales.utils.getCurrentDate
 import com.david.statuscovid_carsales.utils.toLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class CovidViewModel @Inject constructor(
     private val getStatusCovidUseCase: GetStatusCovidUseCase
-) : ViewModel() {
+) : BaseViewModel() {
 
-    private val _statusCovidLiveData = MutableLiveData<Resource<StatusCovidViewData>>()
-    val statusCovidLivedata = _statusCovidLiveData.toLiveData()
+    private val _statusCovidStateLiveData = MutableLiveData<State<StatusCovidViewData>>()
+    val statusCovidStateLiveData = _statusCovidStateLiveData.toLiveData()
 
-    fun getStatusCovid(date: String) = viewModelScope.launch(Dispatchers.IO) {
-        getStatusCovidUseCase.execute(date).collect {
+    private val _statusCovidLiveData = MutableLiveData<StatusCovidViewData?>()
+    val statusCovidLiveData = _statusCovidLiveData.toLiveData()
+
+    var lastDateRequest: Date = getCurrentDate(-1)
+
+    fun getStatusCovid(date: Date = getCurrentDate(-1)) = manageView(
+        getStatusCovidUseCase.execute(date),
+        _statusCovidStateLiveData,
+        onLoading = {
+            lastDateRequest = date
+        },
+        onSuccess = {
             _statusCovidLiveData.postValue(it)
-        }
-    }
-
-    fun showDate() = liveData {
-        var dt = Date()
-        val c = Calendar.getInstance()
-        c.time = dt
-        c.add(Calendar.DATE, -1)
-        dt = c.time
-
-        emit(dt)
-    }
-
+        })
 }
