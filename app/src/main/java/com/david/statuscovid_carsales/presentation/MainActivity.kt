@@ -3,6 +3,7 @@ package com.david.statuscovid_carsales.presentation
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.david.statuscovid_carsales.R
 import com.david.statuscovid_carsales.data.util.State
 import com.david.statuscovid_carsales.databinding.ActivityMainBinding
 import com.david.statuscovid_carsales.presentation.viewmodel.CovidViewModel
@@ -16,7 +17,6 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: CovidViewModel by viewModels()
     private lateinit var mBinding: ActivityMainBinding
 
-    private lateinit var mDate: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
@@ -37,16 +37,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun initCalendar() {
         CalendarManager.showPickerDialog(this) {
-            mDate = it
             displayFormatDate(it)
-            viewModel.getStatusCovid(mDate.toDateFormat(YYYY_MM_DD_WITH_SCRIPT))
+            viewModel.getStatusCovid(it.toDateFormat(YYYY_MM_DD_WITH_SCRIPT))
         }
     }
 
     private fun initObserver() {
         viewModel.statusCovidStateLiveData.observe(this) {
             if (it is State.Error) {
-                mBinding.errorView.show("An error ocurred : ${it.message}") {
+                mBinding.errorView.show("${getString(R.string.error_message)} ${it.message}") {
                     viewModel.getStatusCovid(viewModel.lastDateRequest)
                 }
             }
