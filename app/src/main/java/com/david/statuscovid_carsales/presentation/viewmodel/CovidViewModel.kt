@@ -6,6 +6,7 @@ import com.david.statuscovid_carsales.data.util.State
 import com.david.statuscovid_carsales.domain.usecase.GetStatusCovidUseCase
 import com.david.statuscovid_carsales.presentation.viewdata.StatusCovidViewData
 import com.david.statuscovid_carsales.utils.BaseViewModel
+import com.david.statuscovid_carsales.utils.getCurrentDate
 import com.david.statuscovid_carsales.utils.toLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.*
@@ -22,19 +23,15 @@ class CovidViewModel @Inject constructor(
     private val _statusCovidLiveData = MutableLiveData<StatusCovidViewData?>()
     val statusCovidLiveData = _statusCovidLiveData.toLiveData()
 
-    fun getStatusCovid(date: String) = manageView(
+    var lastDateRequest: Date = getCurrentDate(-1)
+
+    fun getStatusCovid(date: Date = getCurrentDate(-1)) = manageView(
         getStatusCovidUseCase.execute(date),
-        _statusCovidStateLiveData) {
+        _statusCovidStateLiveData,
+        onLoading = {
+            lastDateRequest = date
+        },
+        onSuccess = {
             _statusCovidLiveData.postValue(it)
-        }
-
-    fun showDate() = liveData {
-        var dt = Date()
-        val c = Calendar.getInstance()
-        c.time = dt
-        c.add(Calendar.DATE, -1)
-        dt = c.time
-
-        emit(dt)
-    }
+        })
 }

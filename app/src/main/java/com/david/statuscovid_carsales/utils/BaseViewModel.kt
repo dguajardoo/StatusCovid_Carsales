@@ -7,16 +7,20 @@ import androidx.lifecycle.viewModelScope
 import com.david.statuscovid_carsales.data.util.State
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
 
-open class BaseViewModel: ViewModel() {
+open class BaseViewModel : ViewModel() {
     val isLoading = ObservableBoolean(false)
     val isContent = ObservableBoolean(false)
     val isError = ObservableBoolean(false)
 
-    fun<V> manageView(flow: Flow<State<V>>, liveData: MutableLiveData<State<V>>, onSuccess: (V) -> Unit = {}) = viewModelScope.launch(Dispatchers.IO) {
+    fun <V> manageView(
+        flow: Flow<State<V>>,
+        liveData: MutableLiveData<State<V>>,
+        onLoading: () -> Unit = {},
+        onSuccess: (V) -> Unit = {}
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        onLoading()
         flow.collect {
 
             if (it is State.Success) {
@@ -29,7 +33,7 @@ open class BaseViewModel: ViewModel() {
         }
     }
 
-    private fun<V>  updateView(state: State<V>) {
+    private fun <V> updateView(state: State<V>) {
         isLoading.set(state is State.Loading)
         isContent.set(state is State.Success)
         isError.set(state is State.Error)
