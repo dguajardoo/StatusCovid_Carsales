@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">StatusCovid_Carsales</string>
+    <string name="selected_date">Seleccione una fecha</string>
+    <string name="confirmed_cases">Casos confirmados: %1$s</string>
+    <string name="number_of_deceased_people">Cantidad de personas fallecidas: %1$s</string>
+    <string name="error_message">Error Message:</string>
+    <string name="button_text_retry">Retry</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
