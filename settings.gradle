@@ -15,3 +15,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "StatusCovid_Carsales"
 include ':app'
+include ':routermodule'
+include ':covidmodule'
+
+project(':routermodule').projectDir = new File('RouterModule/app')
+project(':covidmodule').projectDir = new File('CovidModule/app')

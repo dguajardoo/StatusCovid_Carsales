@@ -1,0 +1,40 @@
+R_DEF: Internal format may change without notice
+local
+attr? errorMessage
+color black
+color purple_200
+color purple_500
+color purple_700
+color teal_200
+color teal_700
+color white
+drawable home
+drawable ic_error
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+drawable splash
+id btn_date
+id buttonRetry
+id contentView
+id errorView
+id imageView
+id imageViewError
+id progressBar
+id textViewError
+id tv_confirmed
+id tv_date
+id tv_deaths
+layout error_layout
+layout fragment_covid
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+string button_text_retry
+string confirmed_cases
+string error_message
+string number_of_deceased_people
+string selected_date
+style Theme.CovidModule
+styleable ErrorView errorMessage
+xml backup_rules
+xml data_extraction_rules
