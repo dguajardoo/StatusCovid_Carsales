@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.covidmodule.viewmodel.CovidViewModelTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-11-03T19:16:48" hostname="MacBook-Pro-de-David.local" time="0.797">
+  <properties/>
+  <testcase name="successTest" classname="com.example.covidmodule.viewmodel.CovidViewModelTest" time="0.792"/>
+  <testcase name="loadingTest" classname="com.example.covidmodule.viewmodel.CovidViewModelTest" time="0.002"/>
+  <testcase name="errorTest" classname="com.example.covidmodule.viewmodel.CovidViewModelTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
