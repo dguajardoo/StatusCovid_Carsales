@@ -9,6 +9,9 @@ import com.example.covidmodule.presentation.viewdata.StatusCovidViewData
 import com.example.covidmodule.presentation.viewmodel.CovidViewModel
 import com.example.covidmodule.util.ServiceFake
 import com.example.covidmodule.util.getCurrentDate
+import com.example.covidmodule.utils.DashboardEvents
+import com.example.covidmodule.utils.EventObserver
+import com.example.covidmodule.utils.RouterEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.resetMain
@@ -36,6 +39,9 @@ class CovidViewModelTest {
 
     @Mock
     lateinit var covidLiveDataObserver: Observer<State<StatusCovidViewData>>
+
+    @Mock
+    lateinit var dashboardEventObserver: EventObserver<DashboardEvents>
 
     @Before
     fun setUp() {
@@ -108,6 +114,21 @@ class CovidViewModelTest {
             State.Error<State<StatusCovidViewData>>("Response.error()"),
             covidViewModel.statusCovidStateLiveData.value
         )
+    }
 
+    @Test
+    fun should_openCalendarDialog_when_PressButton() {
+        covidViewModel = CovidViewModel(
+            GetStatusCovidUseCase(ServiceFake(), StatusCovidMapper()),
+            Dispatchers.Unconfined
+        ).apply {
+            statusCovidStateLiveData.observeForever(covidLiveDataObserver)
+            eventsLiveData.observeForever(dashboardEventObserver)
+        }
+
+        covidViewModel.openCalendarDialog()
+        verify(dashboardEventObserver).onChanged(
+            refEq(RouterEvent(DashboardEvents.OpenCalendar))
+        )
     }
 }
