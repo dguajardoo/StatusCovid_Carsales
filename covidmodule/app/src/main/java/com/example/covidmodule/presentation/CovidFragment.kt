@@ -63,11 +63,17 @@ class CovidFragment : Fragment() {
                     "${getString(R.string.number_of_deceased_people)} ${it.data.deaths}"
             }
         }
+
+        viewModel.observeEventsLiveData(viewLifecycleOwner, EventObserver {
+            when(it) {
+                DashboardEvents.OpenCalendar -> initCalendar()
+            }
+        })
     }
 
     private fun initListener() {
         mBinding.btnDate.setOnClickListener {
-            initCalendar()
+            viewModel.openCalendarDialog()
         }
     }
 

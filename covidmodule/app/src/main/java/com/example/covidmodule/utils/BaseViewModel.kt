@@ -5,11 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.covidmodule.data.util.State
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-open class BaseViewModel : ViewModel() {
+open class BaseViewModel(private val dispatcher: CoroutineDispatcher) : ViewModel() {
     val isLoading = ObservableBoolean(false)
     val isContent = ObservableBoolean(false)
     val isError = ObservableBoolean(false)
@@ -19,7 +19,7 @@ open class BaseViewModel : ViewModel() {
         liveData: MutableLiveData<State<V>>,
         onLoading: () -> Unit = {},
         onSuccess: (V) -> Unit = {}
-    ) = viewModelScope.launch(Dispatchers.IO) {
+    ) = viewModelScope.launch(dispatcher) {
         onLoading()
         flow.collect {
 
